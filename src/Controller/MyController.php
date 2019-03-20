@@ -40,6 +40,24 @@ class MyController extends AbstractController
      */
     public function helloUser( string $name )
     {
-        return new Response('<html><body><p><a href="'.$this->generateUrl('hello_user', [ 'name' => $name ] ).'">Click aqui</a></p></body></html>');
+        $arr = ['name' => $name];
+
+        return $this->render('my/hello.html.twig', $arr);//new Response('<html><body><p><a href="'.$this->generateUrl('hello_user', [ 'name' => $name ] ).'">Click aqui</a></p></body></html>');
+    }
+
+    /**
+     * @Route("/show/table", name="show_table")
+     * @return Response
+     */
+    public function showTable()
+    {
+        $records = [
+            [ 'firstName' => 'mauro', 'lastName' => 'chojrin', 'email' => 'mauro.chojrin@leewayweb.com', 'age' => 41 ],
+            [ 'firstName' => 'Juan', 'lastName' => 'Perez', 'email' => 'juanp@gmail.com', 'age' => 17 ],
+        ];
+
+        return $this->render( 'my/showTable.html.twig', [
+            'records' => $records,
+        ]);
     }
 }

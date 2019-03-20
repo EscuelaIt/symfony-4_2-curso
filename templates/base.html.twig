@@ -6,7 +6,12 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block body %}<h1>Hola EscuelaIT, hoy es {{ "now" | date('d/m/y') }} - {{ '10024' | number_format( 2, ',', '.' ) }}</h1>{% endblock %}
+        {% block javascripts %}<script type="text/javascript">
+            function f()
+            {
+                alert('Hola');
+            }
+        </script> {% endblock %}
     </body>
 </html>
