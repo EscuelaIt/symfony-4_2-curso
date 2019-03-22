@@ -118,7 +118,7 @@ class PostController extends AbstractController
     /**
      * @Route("/new", name="interactively_create_post")
      */
-    public function interactivelyCreate( Request $request )
+    public function interactivelyCreate( Request $request, TranslatorInterface $translator )
     {
         $post = new Post();
         $form = $this->createForm( PostType::class, $post )
@@ -134,6 +134,9 @@ class PostController extends AbstractController
             return $this->redirectToRoute('post');
         }
 
+        $message = $translator->trans('post.new.success', [
+            '$postId' => $post->getId(),
+        ]);
         return $this->render('post/form.html.twig', [ 'form' => $form->createView() ] );
     }
 
@@ -141,15 +144,15 @@ class PostController extends AbstractController
      * @Route("/update/{postId}", name="update_post")
      * @param Request $request
      */
-    public function update(Request $request, int $postId)
+    public function update(Request $request, int $postId, TranslatorInterface $translator)
     {
         if ( ( $post = $this->getDoctrine()->getRepository(Post::class )->find( $postId ) ) == null ) {
 
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException( $translator->trans('post.not_found') );
         }
 
         $form = $this->createForm( PostType::class, $post )
-            ->add( 'Enviar', SubmitType::class )
+            ->add( $translator->trans('send'), SubmitType::class )
         ;
         $form->handleRequest( $request );
 

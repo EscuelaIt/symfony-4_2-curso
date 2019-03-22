@@ -71,7 +71,7 @@ class MyController extends AbstractController
     {
         $html = "
 <html>
-   <body>".$translator->trans('Hello')." $name</body>
+   <body>".$translator->trans('create')." $name</body>
 </html>";
 
         return new Response( $html );

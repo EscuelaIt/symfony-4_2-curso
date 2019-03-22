@@ -1,0 +1,7 @@
+Hello: hola
+post:
+  new:
+    success: El post $postId fue creado!
+  not_found: The post was not found
+edit: editar
+create: crear
