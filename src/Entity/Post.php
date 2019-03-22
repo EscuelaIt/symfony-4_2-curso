@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  */
@@ -18,6 +18,7 @@ class Post
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotEqualTo(value="title", message="El titulo no puede ser 'title'")
      */
     private $title;
 

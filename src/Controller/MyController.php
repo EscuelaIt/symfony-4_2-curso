@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MyController extends AbstractController
 {
@@ -59,5 +60,20 @@ class MyController extends AbstractController
         return $this->render( 'my/showTable.html.twig', [
             'records' => $records,
         ]);
+    }
+
+    /**
+     * @Route(path="/test/i18n/{name}", name="test_i18n")
+     * @param Request $request
+     * @return Response
+     */
+    public function testI18n( TranslatorInterface $translator, string $name )
+    {
+        $html = "
+<html>
+   <body>".$translator->trans('Hello')." $name</body>
+</html>";
+
+        return new Response( $html );
     }
 }

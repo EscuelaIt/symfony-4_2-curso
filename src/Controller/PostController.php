@@ -4,14 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\PostCategory;
+use App\Form\PostType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Class PostController
+ * @package App\Controller
+ * @Route("/post")
+ */
 class PostController extends AbstractController
 {
     /**
-     * @Route("/post", name="post")
+     * @Route("/", name="post")
      */
     public function index()
     {
@@ -24,11 +33,11 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/post/new/{title}/{text}", name="new_post")
+     * @Route("/new/{title}/{text}", name="new_post")
      * @param string $title
      * @param string $text
      */
-    public function newPost( string $title, string $text )
+    public function new( string $title, string $text, TranslatorInterface $translator )
     {
         $post = new Post();
 
@@ -41,14 +50,14 @@ class PostController extends AbstractController
         $em->persist( $post );
         $em->flush();
 
-        return new Response('Nuevo post creado, id: '.$post->getId());
+        return new Response( $translator->trans('post.new.success', [ '$postId' => $post->getId() ] ) );
     }
 
     /**
-     * @Route("/post/show/{postId}", name="show_post")
+     * @Route("/show/{postId}", name="show_post")
      */
 
-    public function showPost( int $postId )
+    public function show( int $postId, TranslatorInterface $translator )
     {
         $em = $this->getDoctrine()->getManager();
         if ( $post = $em->getRepository( Post::class )->find( $postId ) ) {
@@ -56,15 +65,15 @@ class PostController extends AbstractController
             return $this->render('post/show.html.twig', ['post' => $post ]);
         } else {
 
-            throw $this->createNotFoundException( 'El post '.$postId.' no existe!' );
+            throw $this->createNotFoundException( $translator->trans( 'post.not_found', [ '$postId' => $postId ] ) );
         }
     }
 
     /**
-     * @Route("/post/delete/{postId}", name="delete_post")
+     * @Route("/delete/{postId}", name="delete_post")
      */
 
-    public function deletePost( int $postId )
+    public function delete( int $postId, TranslatorInterface $translator )
     {
         $em = $this->getDoctrine()->getManager();
         if ( $post = $em->getRepository( Post::class )->find( $postId ) ) {
@@ -74,12 +83,12 @@ class PostController extends AbstractController
             return $this->redirect( $this->generateUrl('post' ) );
         } else {
 
-            throw $this->createNotFoundException( 'El post '.$postId.' no existe!' );
+            throw $this->createNotFoundException( $translator->trans( 'post.not_found', ['$postId' => $postId ] ) );
         }
     }
 
     /**
-     * @Route("/post/categorize/{postId}/{categoryName}", name="categorize_post")
+     * @Route("/categorize/{postId}/{categoryName}", name="categorize_post")
      * @param int $postId
      * @param string $categoryName
      */
@@ -104,5 +113,54 @@ class PostController extends AbstractController
         $em->flush();
 
         return $this->redirect( $this->generateUrl( 'post' ) );
+    }
+
+    /**
+     * @Route("/new", name="interactively_create_post")
+     */
+    public function interactivelyCreate( Request $request )
+    {
+        $post = new Post();
+        $form = $this->createForm( PostType::class, $post )
+            ->add( 'Enviar', SubmitType::class )
+        ;
+        $form->handleRequest( $request );
+
+        if ( $form->isSubmitted() && $form->isValid() ) {
+            $objectManager = $this->getDoctrine()->getManager();
+            $objectManager->persist( $post );
+            $objectManager->flush();
+
+            return $this->redirectToRoute('post');
+        }
+
+        return $this->render('post/form.html.twig', [ 'form' => $form->createView() ] );
+    }
+
+    /**
+     * @Route("/update/{postId}", name="update_post")
+     * @param Request $request
+     */
+    public function update(Request $request, int $postId)
+    {
+        if ( ( $post = $this->getDoctrine()->getRepository(Post::class )->find( $postId ) ) == null ) {
+
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm( PostType::class, $post )
+            ->add( 'Enviar', SubmitType::class )
+        ;
+        $form->handleRequest( $request );
+
+        if ( $form->isSubmitted() && $form->isValid() ) {
+            $objectManager = $this->getDoctrine()->getManager();
+            $objectManager->persist( $post );
+            $objectManager->flush();
+
+            return $this->redirectToRoute('show_post', [ 'postId' => $postId ] );
+        }
+
+        return $this->render('post/form.html.twig', [ 'form' => $form->createView() ] );
     }
 }
