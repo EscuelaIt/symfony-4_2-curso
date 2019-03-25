@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use mysql_xdevapi\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,7 +90,7 @@ class MyController extends AbstractController
             ->setTo($to)
             ->setSubject($subject)
             ->setBody(
-                'Lorem ipsum',
+                $this->renderView('my/email_body.html.twig', [ 'texto' => 'Un texto']),
                 'text/html'
             );
 
@@ -108,7 +107,7 @@ class MyController extends AbstractController
      */
     public function logMessage(LoggerInterface $logger, string $message): Response
     {
-        $logger->info($message);
+        $logger->alert($message);
 
         return new Response('<html><body><p>Message logged!</p></body></html>');
     }
