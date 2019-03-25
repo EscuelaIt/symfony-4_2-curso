@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use mysql_xdevapi\Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Psr\Log\LoggerInterface;
 
 class MyController extends AbstractController
 {
@@ -49,6 +52,7 @@ class MyController extends AbstractController
     /**
      * @Route("/show/table", name="show_table")
      * @return Response
+     * @IsGranted("ROLE_USER")
      */
     public function showTable()
     {
@@ -75,5 +79,45 @@ class MyController extends AbstractController
 </html>";
 
         return new Response( $html );
+    }
+
+    /**
+     * @Route(path="/email/send/{to}/{subject}", name="send_email")
+     */
+    public function sendEmail( \Swift_Mailer $mailer, string $to, string $subject ): Response
+    {
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('maurochojrin@gmail.com', 'Mauro Chojrin (EscuelaIT)')
+            ->setTo($to)
+            ->setSubject($subject)
+            ->setBody(
+                'Lorem ipsum',
+                'text/html'
+            );
+
+        $mailer->send($message);
+
+        return $this->render('my/email_sent.html.twig');
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @param string $message
+     * @return Response
+     * @Route(name="log_message", path="/log/{message}")
+     */
+    public function logMessage(LoggerInterface $logger, string $message): Response
+    {
+        $logger->info($message);
+
+        return new Response('<html><body><p>Message logged!</p></body></html>');
+    }
+
+    /**
+     * @Route(name="log_exception", path="/log_exception")
+     */
+    public function logException()
+    {
+        throw new \Exception('Excepcion logeable');
     }
 }

@@ -3,5 +3,8 @@ post:
   new:
     success: El post $postId fue creado!
   not_found: El post $postId no existe!
+  list:
+    title: Lista de Posts
+  title: titulo
 edit: editar
 create: crear

@@ -1,0 +1,3 @@
+post:
+  error:
+    duplicated_title: El titulo ya se encuentra registrado

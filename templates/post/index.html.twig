@@ -5,7 +5,7 @@
 {% block contents %}
 
 <div class="example-wrapper">
-    <h1>Posts disponibles</h1>
+    <h1>{{ 'post.list.title' | trans }}</h1>
 
     {% for p in posts %}
         <p><a href="{{ url('show_post', { postId: p.id} ) }}">{{ p.title }}</a></p>
