@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'es_AR'
+    adminEmail: 'mauro.chojrin@leewayweb.com'
+    router.request_context.base_url: 'http://localhost:8000'
 
 services:
     # default configuration for services in *this* file
@@ -17,6 +19,10 @@ services:
     App\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    App\Service\Notifier:
+        arguments:
+            $adminEmail: '%adminEmail%'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

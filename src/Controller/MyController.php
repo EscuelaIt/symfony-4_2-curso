@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Service\MyService;
+use App\Service\Notifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,18 +85,9 @@ class MyController extends AbstractController
     /**
      * @Route(path="/email/send/{to}/{subject}", name="send_email")
      */
-    public function sendEmail( \Swift_Mailer $mailer, string $to, string $subject ): Response
+    public function sendEmail( Notifier $notifier, string $to, string $subject ): Response
     {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('maurochojrin@gmail.com', 'Mauro Chojrin (EscuelaIT)')
-            ->setTo($to)
-            ->setSubject($subject)
-            ->setBody(
-                $this->renderView('my/email_body.html.twig', [ 'texto' => 'Un texto']),
-                'text/html'
-            );
-
-        $mailer->send($message);
+        $notifier->notify( $this->getParameter('adminEmail'), $to, $subject );
 
         return $this->render('my/email_sent.html.twig');
     }
@@ -118,5 +111,15 @@ class MyController extends AbstractController
     public function logException()
     {
         throw new \Exception('Excepcion logeable');
+    }
+
+    /**
+     * @Route(path="/service/test", name="service_test")
+     * @param MyService $myService
+     * @return Response
+     */
+    public function testService( MyService $myService )
+    {
+        return new Response( $myService->serve() );
     }
 }
