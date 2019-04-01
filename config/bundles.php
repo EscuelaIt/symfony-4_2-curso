@@ -15,5 +15,6 @@ return [
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true],
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
-    App\EscuelaIt\MyBundle\EscuelaItMyBundle::class => ['all' => true],
+    EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
+    App\EscuelaIT\MyBundle\EscuelaITMyBundle::class => ['all' => true ],
 ];

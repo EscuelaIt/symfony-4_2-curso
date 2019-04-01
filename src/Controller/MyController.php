@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\EscuelaIT\MyBundle\EscuelaITMyBundle;
 use App\Service\MyService;
 use App\Service\Notifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
+use App\EscuelaIT\MyBundle\Service\MyService as EscuelaItService;
 
 class MyController extends AbstractController
 {
@@ -118,7 +120,7 @@ class MyController extends AbstractController
      * @param MyService $myService
      * @return Response
      */
-    public function testService( MyService $myService )
+    public function testService( EscuelaItService $myService )
     {
         return new Response( $myService->serve() );
     }
