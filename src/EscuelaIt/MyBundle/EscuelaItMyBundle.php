@@ -1,10 +1,9 @@
 <?php
 
-
 namespace App\EscuelaIt\MyBundle;
 
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class EscuelaItMyBundle
+class EscuelaItMyBundle extends Bundle
 {
-
 }
