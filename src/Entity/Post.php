@@ -50,7 +50,7 @@ class Post
             $this->title = $title;
         } else {
 
-            throw new Exception();
+            throw new \Exception();
         }
 
         return $this;
