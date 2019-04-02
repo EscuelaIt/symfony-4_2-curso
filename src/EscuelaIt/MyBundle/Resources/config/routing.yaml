@@ -1,0 +1,3 @@
+escuelait_mybundle:
+  resource: '../../Controller'
+  type: annotation

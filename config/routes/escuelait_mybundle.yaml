@@ -1,0 +1,2 @@
+escuelait_mybundle:
+  resource: '@EscuelaITMyBundle/Resources/config/routing.yaml'
