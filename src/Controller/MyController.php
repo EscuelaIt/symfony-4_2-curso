@@ -16,12 +16,13 @@ use App\EscuelaIT\MyBundle\Service\MyService as EscuelaItService;
 class MyController extends AbstractController
 {
     /**
-     * @Route("/my/index", name="my")
+     * @Route("/my/index/{id}", name="my", options={"expose"=true})
      */
-    public function index()
+    public function index( int $id )
     {
         return $this->render('my/index.html.twig', [
             'controller_name' => 'MyController',
+            'id' => $id,
         ]);
     }
 

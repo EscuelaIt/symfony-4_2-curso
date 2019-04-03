@@ -1,0 +1,1 @@
+{"base_url":"http:\/\/localhost:8000","routes":{"my":{"tokens":[["variable","\/","[^\/]++","id",true],["text","\/my\/index"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"localhost","port":"","scheme":"http"}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MyController!{% endblock %}
+{% block title %}Hello ExampleController!{% endblock %}
 
 {% block body %}
 <style>
@@ -13,8 +13,27 @@
 
     This friendly message is coming from:
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/mchoj/my-project/src/Controller/MyController.php'|file_link(0) }}">src/Controller/MyController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/mchoj/my-project/templates/my/index.html.twig'|file_link(0) }}">templates/my/index.html.twig</a></code></li>
+        <li>Your controller at <code><a href="{{ '/home/mauro/Dropbox/Work/Leeway/Academy/Tests/js_routing/src/Controller/ExampleController.php'|file_link(0) }}">src/Controller/ExampleController.php</a></code></li>
+        <li>Your template at <code><a href="{{ '/home/mauro/Dropbox/Work/Leeway/Academy/Tests/js_routing/templates/example/index.html.twig'|file_link(0) }}">templates/example/index.html.twig</a></code></li>
+        <li>Current id: {{ id }}</li>
+        <li>Next id: <select id="theSelect">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+            <button id="changeId" onclick="javascript: doChangeId();">Change id!</button></li>
     </ul>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        function doChangeId()
+        {
+            var theSelect = document.getElementById('theSelect');
+            var value = theSelect.value;
+
+            window.location.href = Routing.generate('my', { 'id': value } );
+        }
+    </script>
+    {{ parent() }}
 {% endblock %}
