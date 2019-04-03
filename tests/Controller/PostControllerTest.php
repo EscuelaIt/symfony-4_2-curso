@@ -20,20 +20,6 @@ class PostControllerTest extends WebTestCase
 
         $client->request('GET', '/post/');
 
-        $this->assertTrue($client->getResponse()->isRedirect('/login') );
-    }
-
-    public function testLoginIsPossible()
-    {
-        $client = static::createClient();
-
-        $client->request('GET', '/login/');
-
-        $crawler = $client->getCrawler();
-        $form = $crawler->selectButton('submit')->form();
-        $form->set('username', 'admin');
-        $form->set('password', 'admin');
-
-        $crawler = $client->submit( $form );
+        $this->assertTrue( $client->getResponse()->isRedirect('http://localhost/login') );
     }
 }
