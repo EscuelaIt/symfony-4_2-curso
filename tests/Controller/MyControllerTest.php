@@ -14,7 +14,7 @@ class MyControllerTest extends WebTestCase
 {
     public function testHelloUserWillPrintTheNameReceivedViaUrl()
     {
-        $client = static::createClient();
+        $client = WebTestCase::createClient();
 
         $client->request('GET', '/hello/mauro');
         $crawler = $client->getCrawler();

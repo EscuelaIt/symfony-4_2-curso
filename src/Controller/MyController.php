@@ -27,7 +27,7 @@ class MyController extends AbstractController
     }
 
     /**
-     * @Route("/hello/world", name="hello_world")
+     * @Route("/hello/world", name="hello_world", options={"expose"=true})
      * @return Response
      */
     public function helloWorld()

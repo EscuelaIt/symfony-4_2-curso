@@ -14,12 +14,20 @@ use PHPUnit\Framework\TestCase;
 class PostTest extends TestCase
 {
 
-    public function testSetTitleWillNotAcceptTitulo()
+    public function testSetTitleWillNotAcceptTituloAsValue()
     {
         $this->expectException( \Exception::class );
         $sut = new Post();
         $forbiddenTitle = 'Titulo';
 
-        $sut->setTitle($forbiddenTitle );
+        $sut->setTitle($forbiddenTitle);
+    }
+
+    public function testSetTitleWillStoreTitle()
+    {
+        $sut = new Post();
+        $sut->setTitle('Un post');
+
+        $this->assertEquals( 'Un post', $sut->getTitle() );
     }
 }
